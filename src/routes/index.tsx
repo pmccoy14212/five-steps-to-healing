@@ -1,4 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import {
+  Heart,
+  Compass,
+  ShieldAlert,
+  BookOpen,
+  MessageCircle,
+  CheckCircle2,
+  ArrowRight,
+  Sparkles,
+} from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -7,311 +18,397 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { SafetyNote } from "@/components/safety-note";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "The First-Year Trigger Map — Ncredible Solutions" },
-      {
-        name: "description",
-        content:
-          "A gentle guide and toolkit for the moments grief catches you off guard — recognize what's happening, release the shame, and choose one next survivable step.",
-      },
-      { property: "og:title", content: "The First-Year Trigger Map" },
-      {
-        property: "og:description",
-        content:
-          "Peer-support education for the first year of grief. Understand your triggers, and choose one gentle next step. $47.",
-      },
-    ],
-  }),
-  component: HomePage,
+  component: Index,
 });
 
-const PART_ONE = [
-  "What a Grief Trigger Actually Is",
-  "Why the Small Things Ambush You",
-  "You Are Not Doing This Wrong",
-  "The Shapes First-Year Triggers Take",
-  "When to Reach for More Support",
-];
-
-const PART_TWO = [
-  {
-    name: "Trigger Pattern Worksheet",
-    note: "Notice what keeps catching you, and what came just before it.",
-  },
-  {
-    name: "What to Say to Yourself Cards",
-    note: "Short, kind sentences for the moment your chest goes tight.",
-  },
-  {
-    name: "Trigger Prep Card",
-    note: "A one-page plan for a date, a gathering, or an errand you're dreading.",
-  },
-  {
-    name: "The Both/And List",
-    note: "Room for grief that came with complications, relief, or anger.",
-  },
-  {
-    name: "Next Survivable Step Companion",
-    note: "The guided AI tool — described just below.",
-  },
-];
-
-function HomePage() {
+function Index() {
   return (
-    <div>
-      {/* 1. HERO */}
-      <section className="mx-auto max-w-3xl px-6 pt-20 pb-16">
-        <p className="text-xs tracking-[0.22em] text-muted-foreground uppercase">
-          Ncredible Solutions
-        </p>
-        <h1 className="mt-6 text-4xl text-balance sm:text-[3.25rem]">
-          When a Memory, a Date, or an Ordinary Moment Catches You Off Guard
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-          The First-Year Trigger Map helps you recognize what's happening, release the extra shame,
-          and choose one gentle next step — at your own pace.
-        </p>
-        <div className="mt-9 flex flex-wrap items-center gap-4">
-          <Button asChild size="lg" className="px-8">
-            <Link to="/checkout" search={{ bundle: undefined }}>
-              Get the Guide — $47
-            </Link>
+    <div className="min-h-screen bg-background text-foreground">
+      <SiteHeader />
+      <Hero />
+      <AmbushMoment />
+      <WhyThisHappens />
+      <WhatsInside />
+      <AiCompanion />
+      <FounderCredibility />
+      <WhatThisIsNot />
+      <Pricing />
+      <Faq />
+      <ClosingCta />
+      <SiteFooter />
+    </div>
+  );
+}
+
+function SiteHeader() {
+  return (
+    <header className="border-b border-border/70 bg-background/80 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <div className="flex items-center gap-2">
+          <Heart className="h-5 w-5 text-primary" strokeWidth={1.75} />
+          <span className="font-serif text-lg tracking-tight">Ncredible Solutions</span>
+        </div>
+        <a href="#pricing">
+          <Button variant="default" size="sm">
+            Get the Trigger Map
           </Button>
-          <span className="text-sm text-muted-foreground">
-            Instant access · Yours to keep · Read at your own pace
-          </span>
-        </div>
-      </section>
+        </a>
+      </div>
+    </header>
+  );
+}
 
-      {/* 2. THE AMBUSH MOMENT */}
-      <section className="border-y border-border/70 bg-secondary/50">
-        <div className="mx-auto max-w-3xl px-6 py-16">
-          <p className="font-display text-2xl leading-snug text-balance">
-            One second you're doing something unremarkable — reaching for the wrong brand of coffee,
-            filling in a form, hearing three notes of a song in a parking lot.
-          </p>
-          <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-            The next second you're somewhere else entirely. Not remembering it — inside it. And then
-            you have to put your face back together and finish the errand, because the world doesn't
-            pause for the smell of someone's shampoo in aisle four.
+function Hero() {
+  return (
+    <section className="mx-auto max-w-4xl px-6 pb-16 pt-16 text-center sm:pt-24">
+      <p className="mb-5 inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-1.5 text-xs font-medium tracking-wide text-secondary-foreground">
+        <Sparkles className="h-3.5 w-3.5" />
+        FIVE STEPS TO HEALING
+      </p>
+      <h1 className="text-balance font-serif text-4xl leading-tight tracking-tight sm:text-5xl sm:leading-tight">
+        The first year after loss doesn't need to break you.
+      </h1>
+      <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg text-muted-foreground">
+        A gentle, honest roadmap for the days you can't see past — written by someone who has
+        buried a child, both parents, and still had to show up for three grieving grandchildren
+        the next morning.
+      </p>
+      <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <a href="#pricing">
+          <Button size="lg" className="gap-2">
+            Start with the First-Year Trigger Map
+            <ArrowRight className="h-4 w-4" />
+          </Button>
+        </a>
+        <a href="#whats-inside">
+          <Button size="lg" variant="outline">
+            See what's inside
+          </Button>
+        </a>
+      </div>
+      <p className="mt-5 text-xs text-muted-foreground">
+        Not therapy. Not a fix. A hand to hold when the calendar turns cruel.
+      </p>
+    </section>
+  );
+}
+
+function AmbushMoment() {
+  return (
+    <section className="border-y border-border/70 bg-secondary/60">
+      <div className="mx-auto max-w-3xl px-6 py-16 text-center">
+        <h2 className="font-serif text-2xl tracking-tight sm:text-3xl">
+          You made it through the funeral. Then Tuesday ambushed you.
+        </h2>
+        <p className="mt-5 text-pretty text-muted-foreground">
+          Nobody warns you about the grocery store aisle, the ringtone you can't change, the
+          birthday that shows up on your calendar whether you're ready or not. The worst grief
+          moments rarely arrive on the anniversary. They arrive sideways — in traffic, at
+          checkout, at 2 a.m. — and there's almost never a plan for what to do in that exact
+          minute.
+        </p>
+        <p className="mt-4 text-pretty font-medium text-foreground">
+          This is a plan for that exact minute.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function WhyThisHappens() {
+  const points = [
+    {
+      title: "Grief doesn't follow a calendar",
+      body: "It follows triggers — smells, songs, dates, empty chairs at the table. Most grief resources are organized by month or stage. Real grief doesn't cooperate with either.",
+    },
+    {
+      title: "You're still the responsible one",
+      body: "Final arrangements, estate calls, other people's grief to hold space for. The support you need has to fit into a life that hasn't stopped needing you.",
+    },
+    {
+      title: "\"Just give it time\" isn't a plan",
+      body: "Time helps. It's also not something you can act on at 11:40 p.m. when a memory ambushes you and you need to know what to actually do next.",
+    },
+  ];
+  return (
+    <section className="mx-auto max-w-5xl px-6 py-16">
+      <div className="mx-auto mb-12 max-w-2xl text-center">
+        <h2 className="font-serif text-2xl tracking-tight sm:text-3xl">
+          Why the usual grief advice doesn't land
+        </h2>
+      </div>
+      <div className="grid gap-6 sm:grid-cols-3">
+        {points.map((p) => (
+          <Card key={p.title} className="border-border/70">
+            <CardContent className="pt-6">
+              <h3 className="font-serif text-lg">{p.title}</h3>
+              <p className="mt-3 text-sm text-muted-foreground">{p.body}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function WhatsInside() {
+  const items = [
+    {
+      icon: Compass,
+      title: "The First-Year Trigger Map",
+      body: "A trigger-indexed guide — not a stage-indexed one. Find the moment you're in (an anniversary, a first holiday, an unexpected reminder) and go straight to what actually helps.",
+    },
+    {
+      icon: BookOpen,
+      title: "The Grief Toolkit",
+      body: "Practical companion workbook for the logistics grief doesn't warn you about — the financial strain, the decisions, the paperwork of loss.",
+    },
+    {
+      icon: Heart,
+      title: "Health Loss & Estrangement Workbooks",
+      body: "For the losses people don't send casseroles for: a health diagnosis, a fractured family relationship, a version of your future that quietly ended.",
+    },
+    {
+      icon: MessageCircle,
+      title: "The Next Survivable Step Companion",
+      body: "A free, always-available tool that asks three quiet questions and hands you one honest next step — no login, no diagnosis, no pretending you're further along than you are.",
+    },
+  ];
+  return (
+    <section id="whats-inside" className="border-t border-border/70 bg-secondary/40">
+      <div className="mx-auto max-w-5xl px-6 py-16">
+        <div className="mx-auto mb-12 max-w-2xl text-center">
+          <h2 className="font-serif text-2xl tracking-tight sm:text-3xl">
+            What's inside the Five Steps to Healing suite
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            Four pieces, built to work alone or together — start with whichever meets you where
+            you are.
           </p>
         </div>
-      </section>
-
-      {/* 3. WHY THIS HAPPENS */}
-      <section className="mx-auto max-w-3xl px-6 py-16">
-        <h2 className="text-3xl">Why this happens — and why it isn't a setback</h2>
-        <div className="mt-6 space-y-5 text-[1.05rem] leading-relaxed text-muted-foreground">
-          <p>
-            Most of us brace for the big ones. The anniversary. The birthday. The first holiday with
-            an empty chair. Those days are hard, but at least you can see them coming.
-          </p>
-          <p>
-            What nobody prepares you for is the ordinary stuff. A voicemail you forgot was saved. A
-            handwriting sample on an old grocery list. Someone else's laugh in a crowded room. And
-            because you didn't see it coming, the surprise itself gets misread — as proof that
-            you're slipping, that you should be further along, that something is wrong with the way
-            you're doing this.
-          </p>
-          <p>
-            That's the shame spiral: the grief, and then the second layer of judgment stacked on top
-            of it for still having the grief.
-          </p>
-          <p className="border-l-2 border-primary/50 pl-6 text-foreground">
-            A trigger is not a setback. It is not backsliding. It is evidence of how present that
-            person, that body, that relationship still is in your life. The goal was never to stop
-            being ambushed. It's to know what's happening when you are, and to have something to do
-            next.
-          </p>
-        </div>
-      </section>
-
-      {/* 4. WHAT'S INSIDE */}
-      <section className="border-y border-border/70 bg-secondary/50">
-        <div className="mx-auto max-w-5xl px-6 py-16">
-          <h2 className="text-3xl">What's inside</h2>
-          <div className="mt-10 grid gap-8 md:grid-cols-2">
-            <Card className="border-border/80">
-              <CardContent className="p-8">
-                <p className="text-xs tracking-[0.18em] text-muted-foreground uppercase">
-                  Part One — Understanding
-                </p>
-                <h3 className="mt-3 text-xl">To read</h3>
-                <ul className="mt-6 space-y-4">
-                  {PART_ONE.map((item) => (
-                    <li key={item} className="flex gap-4 leading-relaxed">
-                      <span
-                        aria-hidden
-                        className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary"
-                      />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
+        <div className="grid gap-6 sm:grid-cols-2">
+          {items.map((item) => (
+            <Card key={item.title} className="border-border/70 bg-card">
+              <CardContent className="flex gap-4 pt-6">
+                <item.icon className="h-6 w-6 shrink-0 text-primary" strokeWidth={1.75} />
+                <div>
+                  <h3 className="font-serif text-lg">{item.title}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{item.body}</p>
+                </div>
               </CardContent>
             </Card>
-
-            <Card className="border-border/80">
-              <CardContent className="p-8">
-                <p className="text-xs tracking-[0.18em] text-muted-foreground uppercase">
-                  Part Two — The Toolkit
-                </p>
-                <h3 className="mt-3 text-xl">To do</h3>
-                <ul className="mt-6 space-y-5">
-                  {PART_TWO.map((item) => (
-                    <li key={item.name} className="flex gap-4">
-                      <span
-                        aria-hidden
-                        className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary"
-                      />
-                      <span>
-                        <span className="font-medium">{item.name}</span>
-                        <span className="block text-sm leading-relaxed text-muted-foreground">
-                          {item.note}
-                        </span>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
+          ))}
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      {/* 5. AI COMPANION */}
-      <section className="mx-auto max-w-3xl px-6 py-16">
-        <p className="text-xs tracking-[0.22em] text-muted-foreground uppercase">
-          Included with your purchase
-        </p>
-        <h2 className="mt-4 text-3xl">The Next Survivable Step Companion</h2>
-        <p className="mt-5 text-[1.05rem] leading-relaxed text-muted-foreground">
-          A short guided reflection tool that lives inside your library. You tell it what's
-          happening right now, roughly how much capacity you have, and what kind of support you
-          actually want — practical, comforting, or just permission to do nothing.
-        </p>
-        <p className="mt-4 text-[1.05rem] leading-relaxed text-muted-foreground">
-          It gives you back a personalized <em>Next Survivable Step Card</em> — one step, sized to
-          the day you're actually having. Save it, print it, keep it in your bag. Use it as many
-          times as you need; the answer can be different every time, because you are.
-        </p>
-        <p className="mt-4 text-sm text-muted-foreground">
-          This is a real tool, not a static worksheet — and it never tells you how you should feel.
-        </p>
-      </section>
-
-      {/* 6. FOUNDER */}
-      <section className="border-y border-border/70 bg-secondary/50">
-        <div className="mx-auto max-w-3xl px-6 py-16">
-          <h2 className="text-2xl">Who wrote this</h2>
-          <p className="mt-5 text-[1.05rem] leading-relaxed text-muted-foreground">
-            Written by the founder of Ncredible Solutions — a Human Resources professional with 25+
-            years of experience helping employees navigate grief and loss, who also carries her own
-            experience of profound loss. She writes as a lived-experience peer-support educator, not
-            a clinician.
+function AiCompanion() {
+  return (
+    <section className="mx-auto max-w-4xl px-6 py-16">
+      <div className="grid items-center gap-10 sm:grid-cols-2">
+        <div>
+          <p className="mb-3 text-xs font-medium tracking-wide text-primary">
+            FREE, AVAILABLE 24/7
           </p>
-        </div>
-      </section>
-
-      {/* 7. WHAT THIS IS NOT */}
-      <section className="mx-auto max-w-3xl px-6 py-16">
-        <SafetyNote />
-      </section>
-
-      {/* 8. PRICING */}
-      <section className="mx-auto max-w-3xl px-6 pb-16">
-        <h2 className="text-3xl">Simple pricing</h2>
-        <Card className="mt-8 border-primary/50">
-          <CardContent className="p-8">
-            <div className="flex flex-wrap items-baseline justify-between gap-4">
-              <h3 className="text-2xl">The First-Year Trigger Map</h3>
-              <span className="font-display text-3xl text-primary">$47</span>
-            </div>
-            <p className="mt-3 leading-relaxed text-muted-foreground">
-              Both parts, the full toolkit, and the Next Survivable Step Companion. One payment,
-              yours to keep.
-            </p>
-            <Button asChild size="lg" className="mt-7 w-full sm:w-auto sm:px-10">
-              <Link to="/checkout" search={{ bundle: undefined }}>
-                Get the Guide — $47
-              </Link>
+          <h2 className="font-serif text-2xl tracking-tight sm:text-3xl">
+            When it's 2 a.m. and the book is on the shelf across the room
+          </h2>
+          <p className="mt-4 text-pretty text-muted-foreground">
+            The Next Survivable Step Companion is a quiet, private tool for the moment you can't
+            get to the book. Answer three short questions about where you are right now, and it
+            hands you one small, honest next step — nothing more.
+          </p>
+          <a href="#pricing" className="mt-6 inline-block">
+            <Button variant="outline" className="gap-2">
+              Try the companion tool
+              <ArrowRight className="h-4 w-4" />
             </Button>
+          </a>
+        </div>
+        <Card className="border-border/70 bg-secondary/50">
+          <CardContent className="pt-6 text-sm text-muted-foreground">
+            <p className="font-serif text-base text-foreground">How it works</p>
+            <ol className="mt-3 space-y-2">
+              <li>1. Tell it what's happening right now.</li>
+              <li>2. Tell it how much capacity you have in this moment.</li>
+              <li>3. Tell it whether you're alone or with someone.</li>
+            </ol>
+            <p className="mt-4">
+              It hands back one grounded, doable next step — not a diagnosis, not a lecture.
+            </p>
           </CardContent>
         </Card>
+      </div>
+    </section>
+  );
+}
 
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          <div className="rounded-sm border border-border/80 bg-card p-6">
-            <p className="font-display text-lg">Tender Dates &amp; Gatherings Pack — $17</p>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              A short, practical add-on for the days on the calendar you can already feel coming.
-              Offered as an optional add-on at checkout.
-            </p>
-          </div>
-          <div className="rounded-sm border border-border/80 bg-card p-6">
-            <p className="font-display text-lg">The Complete Bundle — $97</p>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              All five resources for people who want the whole shelf. Best value.{" "}
-              <Link to="/bundle" className="text-primary underline underline-offset-4">
-                See what's included
-              </Link>
-              .
-            </p>
-          </div>
+function FounderCredibility() {
+  return (
+    <section className="border-y border-border/70 bg-secondary/40">
+      <div className="mx-auto max-w-3xl px-6 py-16">
+        <p className="mb-4 text-xs font-medium tracking-wide text-primary">WHY I BUILT THIS</p>
+        <blockquote className="font-serif text-xl leading-relaxed text-foreground sm:text-2xl">
+          "I've spent more than 25 years as an HR professional, counseling people through the
+          hardest days of their working lives. And then I lived it myself — losing my only child,
+          then my father six months later, then my mother. I had to delay my own grief to be
+          present for the three children she left behind. This suite is what I wish someone had
+          handed me."
+        </blockquote>
+        <p className="mt-6 text-sm text-muted-foreground">
+          — Founder, Ncredible Solutions
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function WhatThisIsNot() {
+  const items = [
+    "A replacement for therapy, medical care, or crisis support",
+    "A promise that grief follows a schedule, or that you'll be \"done\" by a certain date",
+    "A diagnosis of what you're feeling, or a judgment on how you're feeling it",
+  ];
+  return (
+    <section className="mx-auto max-w-3xl px-6 py-16">
+      <div className="rounded-2xl border border-warning-border bg-warning px-6 py-8 text-warning-foreground sm:px-10 sm:py-10">
+        <div className="flex items-center gap-3">
+          <ShieldAlert className="h-5 w-5 shrink-0" strokeWidth={1.75} />
+          <h2 className="font-serif text-xl tracking-tight">What this is not</h2>
         </div>
-      </section>
-
-      {/* 9. FAQ */}
-      <section className="mx-auto max-w-3xl px-6 pb-16">
-        <h2 className="text-3xl">Questions people ask</h2>
-        <Accordion type="single" collapsible className="mt-6">
-          <AccordionItem value="q1">
-            <AccordionTrigger>Is this a replacement for therapy?</AccordionTrigger>
-            <AccordionContent>
-              No. This is peer-support education and a practical toolkit — it is not a substitute
-              for professional care. Many people use it alongside a therapist, a grief group, or a
-              doctor, and Part One includes a section on when to reach for more support.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="q2">
-            <AccordionTrigger>What if it's been longer than a year?</AccordionTrigger>
-            <AccordionContent>
-              Then it's still for you. The tools work for anyone still navigating grief triggers,
-              whatever the timeline. There is no expiration date on needing this, and no schedule
-              you were supposed to keep.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="q3">
-            <AccordionTrigger>How does the AI companion tool work?</AccordionTrigger>
-            <AccordionContent>
-              You answer a few guided questions — what's happening, how much capacity you have, and
-              what kind of support you want. It returns a personalized Next Survivable Step Card
-              that you can save or print, and you can use it as many times as you need.
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </section>
-
-      {/* 10. CLOSING */}
-      <section className="mx-auto max-w-3xl px-6 pb-20">
-        <div className="paper-rule mb-12" />
-        <p className="font-display text-2xl leading-snug text-balance">
-          You did not choose this year, and you don't owe it a graceful shape. You only owe yourself
-          the next survivable step.
+        <ul className="mt-5 space-y-3 text-sm">
+          {items.map((item) => (
+            <li key={item} className="flex gap-2.5">
+              <span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-current" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-6 text-sm">
+          If you're in crisis or thinking about harming yourself, please reach out to a crisis
+          line or emergency services in your area right now. This suite is here for the long,
+          slow work of getting through — it isn't built for emergencies.
         </p>
-        <Button asChild size="lg" className="mt-8 px-8">
-          <Link to="/checkout" search={{ bundle: undefined }}>
-            Get the Guide — $47
-          </Link>
-        </Button>
-        <p className="mt-8 text-sm leading-relaxed text-muted-foreground">
-          This is peer-support education, not therapy or emergency care. If you may be in danger,
-          contact local emergency services or call/text 988.
+      </div>
+    </section>
+  );
+}
+
+function Pricing() {
+  return (
+    <section id="pricing" className="border-t border-border/70 bg-secondary/40">
+      <div className="mx-auto max-w-2xl px-6 py-16 text-center">
+        <h2 className="font-serif text-2xl tracking-tight sm:text-3xl">
+          Start with the First-Year Trigger Map
+        </h2>
+        <p className="mt-4 text-muted-foreground">
+          The single best place to begin. Everything else in the suite builds on it.
         </p>
-      </section>
-    </div>
+        <Card className="mx-auto mt-8 max-w-sm border-border/70 bg-card text-left">
+          <CardContent className="pt-6">
+            <p className="font-serif text-lg">The First-Year Trigger Map</p>
+            <p className="mt-2 text-3xl font-semibold">$47</p>
+            <ul className="mt-5 space-y-2 text-sm text-muted-foreground">
+              <li className="flex gap-2">
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" /> Trigger-indexed guide,
+                not stage-indexed
+              </li>
+              <li className="flex gap-2">
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" /> Written for the
+                responsible one, not just the griever
+              </li>
+              <li className="flex gap-2">
+                <CheckCircle2 className="h-4 w-4 shrink-0 text-primary" /> Free access to the
+                Next Survivable Step Companion
+              </li>
+            </ul>
+            <Button className="mt-6 w-full gap-2" size="lg">
+              Get the Trigger Map — $47
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+            <p className="mt-3 text-center text-xs text-muted-foreground">
+              Instant download. Full suite (Toolkit, Health Loss & Estrangement workbooks)
+              available after.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    </section>
+  );
+}
+
+function Faq() {
+  const faqs = [
+    {
+      q: "Is this therapy or a replacement for professional support?",
+      a: "No. This suite is educational and supportive material, not a substitute for therapy, medical care, or crisis intervention. Many people use it alongside professional support.",
+    },
+    {
+      q: "What if my loss isn't a death — it's a divorce, an estrangement, or a diagnosis?",
+      a: "The suite includes dedicated workbooks for health loss, family estrangement, and breakup or divorce grief specifically, because those losses are real and rarely get named as grief.",
+    },
+    {
+      q: "How is this different from other grief books?",
+      a: "Most grief books are organized by stage or by month. This one is organized by trigger — the actual moment you're standing in — because that's when you need help, not on a schedule someone else set.",
+    },
+    {
+      q: "Do I need to buy the whole suite to start?",
+      a: "No. The First-Year Trigger Map stands alone and is the recommended starting point. The rest of the suite is there when and if you need it.",
+    },
+  ];
+  return (
+    <section className="mx-auto max-w-3xl px-6 py-16">
+      <h2 className="mb-8 text-center font-serif text-2xl tracking-tight sm:text-3xl">
+        Questions before you start
+      </h2>
+      <Accordion type="single" collapsible>
+        {faqs.map((faq, i) => (
+          <AccordionItem key={faq.q} value={`item-${i}`}>
+            <AccordionTrigger className="font-serif text-base">{faq.q}</AccordionTrigger>
+            <AccordionContent className="text-muted-foreground">{faq.a}</AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </section>
+  );
+}
+
+function ClosingCta() {
+  return (
+    <section className="border-t border-border/70 bg-secondary/60">
+      <div className="mx-auto max-w-2xl px-6 py-16 text-center">
+        <h2 className="font-serif text-2xl tracking-tight sm:text-3xl">
+          You don't have to figure out the next step alone.
+        </h2>
+        <p className="mt-4 text-muted-foreground">
+          Start with the First-Year Trigger Map, or try the free companion tool right now.
+        </p>
+        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a href="#pricing">
+            <Button size="lg" className="gap-2">
+              Get the Trigger Map
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SiteFooter() {
+  return (
+    <footer className="border-t border-border/70">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-8 text-xs text-muted-foreground sm:flex-row">
+        <p>© {new Date().getFullYear()} Ncredible Solutions. All rights reserved.</p>
+        <Link to="/" className="hover:text-foreground">
+          Five Steps to Healing
+        </Link>
+      </div>
+    </footer>
   );
 }
