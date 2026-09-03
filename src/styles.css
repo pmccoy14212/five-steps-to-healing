@@ -5,7 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Design system definition.
+ * Design system definition — Ncredible Solutions brand.
+ *
+ * Warm, quiet, editorial: cream/paper background, muted plum accent,
+ * generous whitespace. See project knowledge for the source palette.
  *
  * The @theme inline block maps CSS custom properties to Tailwind utility
  * classes (e.g. --color-primary -> bg-primary, text-primary).
@@ -19,6 +22,8 @@
  */
 
 @theme inline {
+  --font-serif: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -42,6 +47,9 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-warning: var(--warning);
+  --color-warning-border: var(--warning-border);
+  --color-warning-foreground: var(--warning-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -59,97 +67,99 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --color-callout: var(--callout);
-  --color-callout-foreground: var(--callout-foreground);
-  --color-callout-border: var(--callout-border);
 }
 
-
-
 :root {
-  --radius: 0.375rem;
-  --font-display: "Fraunces", "Lora", Georgia, serif;
-  --font-body: "Source Sans 3", "Inter", system-ui, sans-serif;
-
-  /* Ncredible Solutions — quiet editorial paper + plum */
-  --background: oklch(0.978 0.008 85);
-  --foreground: oklch(0.255 0.028 318);
+  --radius: 0.75rem;
+  /* cream paper background #FBF8F3 */
+  --background: oklch(0.98 0.007 80.7);
+  /* deep plum-grey text #2B2230 */
+  --foreground: oklch(0.268 0.028 313.3);
+  /* card #FFFFFF */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.255 0.028 318);
+  --card-foreground: oklch(0.268 0.028 313.3);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.255 0.028 318);
-  --primary: oklch(0.435 0.07 318);
+  --popover-foreground: oklch(0.268 0.028 313.3);
+  /* muted plum accent #6B4F73 */
+  --primary: oklch(0.471 0.066 318.6);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.945 0.008 330);
-  --secondary-foreground: oklch(0.435 0.07 318);
-  --muted: oklch(0.945 0.008 330);
-  --muted-foreground: oklch(0.475 0.03 318);
-  --accent: oklch(0.945 0.008 330);
-  --accent-foreground: oklch(0.435 0.07 318);
-  --destructive: oklch(0.55 0.15 28);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.895 0.012 320);
-  --input: oklch(0.895 0.012 320);
-  --ring: oklch(0.435 0.07 318);
-
-  /* Warm callout (safety / disclaimer) */
-  --callout: oklch(0.972 0.02 90);
-  --callout-foreground: oklch(0.3 0.035 60);
-  --callout-border: oklch(0.825 0.07 90);
-
-  --chart-1: oklch(0.435 0.07 318);
-  --chart-2: oklch(0.6 0.06 330);
-  --chart-3: oklch(0.72 0.05 90);
-  --chart-4: oklch(0.55 0.05 260);
-  --chart-5: oklch(0.66 0.07 30);
-  --sidebar: oklch(0.945 0.008 330);
-  --sidebar-foreground: oklch(0.255 0.028 318);
-  --sidebar-primary: oklch(0.435 0.07 318);
+  /* soft accent panel #F1ECEF */
+  --secondary: oklch(0.948 0.007 340.4);
+  --secondary-foreground: oklch(0.268 0.028 313.3);
+  --muted: oklch(0.948 0.007 340.4);
+  /* muted text #6B6070 */
+  --muted-foreground: oklch(0.505 0.028 315.3);
+  --accent: oklch(0.948 0.007 340.4);
+  --accent-foreground: oklch(0.268 0.028 313.3);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  /* warm callout: bg #FCF6E9, border #D9C58C, text #5C4A1E */
+  --warning: oklch(0.974 0.018 86.1);
+  --warning-border: oklch(0.827 0.078 91);
+  --warning-foreground: oklch(0.418 0.066 86.9);
+  /* border #E3DCE6 */
+  --border: oklch(0.903 0.015 316);
+  --input: oklch(0.903 0.015 316);
+  --ring: oklch(0.471 0.066 318.6);
+  --chart-1: oklch(0.471 0.066 318.6);
+  --chart-2: oklch(0.827 0.078 91);
+  --chart-3: oklch(0.6 0.06 315);
+  --chart-4: oklch(0.7 0.05 340);
+  --chart-5: oklch(0.55 0.04 300);
+  --sidebar: oklch(0.98 0.007 80.7);
+  --sidebar-foreground: oklch(0.268 0.028 313.3);
+  --sidebar-primary: oklch(0.471 0.066 318.6);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.978 0.008 85);
-  --sidebar-accent-foreground: oklch(0.435 0.07 318);
-  --sidebar-border: oklch(0.895 0.012 320);
-  --sidebar-ring: oklch(0.435 0.07 318);
+  --sidebar-accent: oklch(0.948 0.007 340.4);
+  --sidebar-accent-foreground: oklch(0.268 0.028 313.3);
+  --sidebar-border: oklch(0.903 0.015 316);
+  --sidebar-ring: oklch(0.471 0.066 318.6);
 }
 
 .dark {
-  --background: oklch(0.2 0.022 318);
-  --foreground: oklch(0.955 0.008 85);
-  --card: oklch(0.255 0.026 318);
-  --card-foreground: oklch(0.955 0.008 85);
-  --popover: oklch(0.255 0.026 318);
-  --popover-foreground: oklch(0.955 0.008 85);
-  --primary: oklch(0.78 0.065 318);
-  --primary-foreground: oklch(0.2 0.022 318);
-  --secondary: oklch(0.3 0.028 318);
-  --secondary-foreground: oklch(0.955 0.008 85);
-  --muted: oklch(0.3 0.028 318);
-  --muted-foreground: oklch(0.75 0.02 318);
-  --accent: oklch(0.32 0.032 318);
-  --accent-foreground: oklch(0.955 0.008 85);
-  --destructive: oklch(0.65 0.16 28);
-  --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.78 0.065 318);
-
-  --callout: oklch(0.3 0.035 85);
-  --callout-foreground: oklch(0.95 0.02 90);
-  --callout-border: oklch(0.55 0.055 90);
-
-  --chart-1: oklch(0.78 0.065 318);
-  --chart-2: oklch(0.7 0.06 330);
-  --chart-3: oklch(0.78 0.07 90);
-  --chart-4: oklch(0.65 0.05 260);
-  --chart-5: oklch(0.7 0.08 30);
-  --sidebar: oklch(0.255 0.026 318);
-  --sidebar-foreground: oklch(0.955 0.008 85);
-  --sidebar-primary: oklch(0.78 0.065 318);
-  --sidebar-primary-foreground: oklch(0.2 0.022 318);
-  --sidebar-accent: oklch(0.3 0.028 318);
-  --sidebar-accent-foreground: oklch(0.955 0.008 85);
-  --sidebar-border: oklch(1 0 0 / 12%);
-  --sidebar-ring: oklch(0.78 0.065 318);
+  /* #211C26 */
+  --background: oklch(0.237 0.02 307.5);
+  /* #EDE7F0 */
+  --foreground: oklch(0.935 0.014 314.8);
+  /* #2A2430 */
+  --card: oklch(0.272 0.023 307.5);
+  --card-foreground: oklch(0.935 0.014 314.8);
+  --popover: oklch(0.272 0.023 307.5);
+  --popover-foreground: oklch(0.935 0.014 314.8);
+  /* #C9A8D6 */
+  --primary: oklch(0.776 0.074 316.4);
+  --primary-foreground: oklch(0.237 0.02 307.5);
+  /* #3A3040 */
+  --secondary: oklch(0.327 0.031 312.7);
+  --secondary-foreground: oklch(0.935 0.014 314.8);
+  --muted: oklch(0.327 0.031 312.7);
+  /* #B9AEC2 */
+  --muted-foreground: oklch(0.766 0.031 310.1);
+  --accent: oklch(0.327 0.031 312.7);
+  --accent-foreground: oklch(0.935 0.014 314.8);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  /* warm callout dark: bg #332B1C, border #8A7440, text #EAD9A6 */
+  --warning: oklch(0.293 0.028 82.8);
+  --warning-border: oklch(0.568 0.076 87);
+  --warning-foreground: oklch(0.887 0.069 91.8);
+  /* #443A4D */
+  --border: oklch(0.367 0.035 308.5);
+  --input: oklch(0.367 0.035 308.5);
+  --ring: oklch(0.776 0.074 316.4);
+  --chart-1: oklch(0.776 0.074 316.4);
+  --chart-2: oklch(0.568 0.076 87);
+  --chart-3: oklch(0.7 0.05 315);
+  --chart-4: oklch(0.6 0.05 340);
+  --chart-5: oklch(0.5 0.04 300);
+  --sidebar: oklch(0.237 0.02 307.5);
+  --sidebar-foreground: oklch(0.935 0.014 314.8);
+  --sidebar-primary: oklch(0.776 0.074 316.4);
+  --sidebar-primary-foreground: oklch(0.237 0.02 307.5);
+  --sidebar-accent: oklch(0.327 0.031 312.7);
+  --sidebar-accent-foreground: oklch(0.935 0.014 314.8);
+  --sidebar-border: oklch(0.367 0.035 308.5);
+  --sidebar-ring: oklch(0.776 0.074 316.4);
 }
 
 @layer base {
@@ -160,35 +170,14 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
-    font-family: var(--font-body);
-    font-size: 1.0625rem;
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
+    font-family: var(--font-sans);
   }
 
   h1,
   h2,
   h3,
-  h4 {
-    font-family: var(--font-display);
-    font-weight: 500;
-    letter-spacing: -0.015em;
-    line-height: 1.15;
+  h4,
+  .font-serif-heading {
+    font-family: var(--font-serif);
   }
 }
-
-@utility font-display {
-  font-family: var(--font-display);
-}
-
-@utility paper-rule {
-  height: 1px;
-  width: 100%;
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--color-border),
-    transparent
-  );
-}
-
