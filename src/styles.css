@@ -62,9 +62,8 @@
   --color-callout: var(--callout);
   --color-callout-foreground: var(--callout-foreground);
   --color-callout-border: var(--callout-border);
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
 }
+
 
 
 :root {
