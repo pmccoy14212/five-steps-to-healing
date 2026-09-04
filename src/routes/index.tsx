@@ -409,6 +409,9 @@ function SiteFooter() {
           Five Steps to Healing
         </Link>
       </div>
+      <div className="mx-auto max-w-6xl px-6 pb-8 text-center">
+        <p className="text-xs text-muted-foreground">© 2026 Ncredible Solutions. All rights reserved.</p>
+      </div>
     </footer>
   );
 }
