@@ -152,6 +152,7 @@ function CheckoutPage() {
       <div className="mt-10">
         <SafetyNote variant="compact" />
       </div>
+      </div>
     </div>
   );
 }
