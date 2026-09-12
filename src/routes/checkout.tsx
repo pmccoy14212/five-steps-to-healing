@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { toast } from "sonner";
 import { listProducts } from "@/lib/catalog.functions";
-import { createCheckoutSession } from "@/lib/checkout.functions";
 import { formatPrice } from "@/lib/format";
 import { useSession } from "@/hooks/use-session";
+import { StripeEmbeddedCheckout } from "@/components/StripeEmbeddedCheckout";
+import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SafetyNote } from "@/components/safety-note";
@@ -43,11 +42,10 @@ function CheckoutPage() {
   const { data: products } = useSuspenseQuery(productsQuery);
   const { user, loading } = useSession();
   const navigate = useNavigate();
-  const startCheckout = useServerFn(createCheckoutSession);
 
   const [bumpOn, setBumpOn] = useState(false);
   const [bundleOn, setBundleOn] = useState(search.bundle === true);
-  const [busy, setBusy] = useState(false);
+  const [paying, setPaying] = useState(false);
 
   const flagship = products.find((p) => p.slug === "first-year-trigger-map");
   const bump = products.find((p) => p.slug === "tender-dates-gatherings-pack");
