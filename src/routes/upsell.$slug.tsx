@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { createFileRoute, Link, useNavigate, notFound } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { toast } from "sonner";
 import { listProducts } from "@/lib/catalog.functions";
-import { createCheckoutSession } from "@/lib/checkout.functions";
 import { formatPrice } from "@/lib/format";
 import { useSession } from "@/hooks/use-session";
+import { StripeEmbeddedCheckout } from "@/components/StripeEmbeddedCheckout";
 import { Button } from "@/components/ui/button";
 import { SafetyNote } from "@/components/safety-note";
 
@@ -54,27 +52,17 @@ function UpsellPage() {
   const { data: products } = useSuspenseQuery(productsQuery);
   const { user } = useSession();
   const navigate = useNavigate();
-  const startCheckout = useServerFn(createCheckoutSession);
-  const [busy, setBusy] = useState(false);
+  const [paying, setPaying] = useState(false);
 
   const product = products.find((p) => p.slug === slug);
   if (!product) throw notFound();
 
-  async function handleBuy() {
+  function handleBuy() {
     if (!user) {
       navigate({ to: "/auth", search: { redirect: `/upsell/${slug}` } });
       return;
     }
-    setBusy(true);
-    try {
-      const { url } = await startCheckout({
-        data: { slugs: [slug], origin: window.location.origin },
-      });
-      window.location.href = url;
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Checkout could not start.");
-      setBusy(false);
-    }
+    setPaying(true);
   }
 
   return (
@@ -96,9 +84,15 @@ function UpsellPage() {
         </ul>
       )}
 
-      <Button size="lg" className="mt-8 w-full sm:w-auto sm:px-10" disabled={busy} onClick={handleBuy}>
-        {busy ? "One moment…" : `Add it — ${formatPrice(product.price_cents)}`}
-      </Button>
+      {paying && user ? (
+        <div className="mt-8">
+          <StripeEmbeddedCheckout slugs={[slug]} />
+        </div>
+      ) : (
+        <Button size="lg" className="mt-8 w-full sm:w-auto sm:px-10" onClick={handleBuy}>
+          Add it — {formatPrice(product.price_cents)}
+        </Button>
+      )}
 
       <p className="mt-4 text-sm text-muted-foreground">
         No thank you is a complete answer.{" "}
