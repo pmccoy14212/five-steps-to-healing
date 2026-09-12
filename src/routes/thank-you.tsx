@@ -4,6 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { listProducts } from "@/lib/catalog.functions";
 import { confirmCheckout } from "@/lib/checkout.functions";
+import { getStripeEnvironment } from "@/lib/stripe";
 import { formatPrice } from "@/lib/format";
 import { useSession } from "@/hooks/use-session";
 import { Button } from "@/components/ui/button";
@@ -44,7 +45,8 @@ function ThankYouPage() {
 
   const { data, isLoading } = useQuery({
     queryKey: ["confirm", reference],
-    queryFn: () => confirm({ data: { reference: reference! } }),
+    queryFn: () =>
+      confirm({ data: { reference: reference!, environment: getStripeEnvironment() } }),
     enabled: Boolean(reference) && Boolean(user),
     retry: 2,
     retryDelay: 1500,

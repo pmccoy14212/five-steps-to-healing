@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { toast } from "sonner";
 import { listProducts } from "@/lib/catalog.functions";
-import { createCheckoutSession } from "@/lib/checkout.functions";
 import { formatPrice } from "@/lib/format";
 import { useSession } from "@/hooks/use-session";
+import { StripeEmbeddedCheckout } from "@/components/StripeEmbeddedCheckout";
+import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { SafetyNote } from "@/components/safety-note";
@@ -43,11 +42,10 @@ function CheckoutPage() {
   const { data: products } = useSuspenseQuery(productsQuery);
   const { user, loading } = useSession();
   const navigate = useNavigate();
-  const startCheckout = useServerFn(createCheckoutSession);
 
   const [bumpOn, setBumpOn] = useState(false);
   const [bundleOn, setBundleOn] = useState(search.bundle === true);
-  const [busy, setBusy] = useState(false);
+  const [paying, setPaying] = useState(false);
 
   const flagship = products.find((p) => p.slug === "first-year-trigger-map");
   const bump = products.find((p) => p.slug === "tender-dates-gatherings-pack");
@@ -61,25 +59,18 @@ function CheckoutPage() {
       .filter((p) => bundle.bundle_slugs.includes(p.slug))
       .reduce((s, p) => s + p.price_cents, 0) - bundle.price_cents;
 
-  async function handlePay() {
+  function handlePay() {
     if (!user) {
       navigate({ to: "/auth", search: { redirect: "/checkout" } });
       return;
     }
-    setBusy(true);
-    try {
-      const { url } = await startCheckout({
-        data: { slugs: lines.map((l) => l.slug), origin: window.location.origin },
-      });
-      window.location.href = url;
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Checkout could not start.");
-      setBusy(false);
-    }
+    setPaying(true);
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-16">
+    <div>
+      <PaymentTestModeBanner />
+      <div className="mx-auto max-w-2xl px-6 py-16">
       <h1 className="text-3xl">Your order</h1>
 
       <div className="mt-8 border-t border-border/70">
@@ -136,9 +127,15 @@ function CheckoutPage() {
         </span>
       </label>
 
-      <Button size="lg" className="mt-8 w-full" disabled={busy || loading} onClick={handlePay}>
-        {busy ? "One moment…" : `Continue — ${formatPrice(total)}`}
-      </Button>
+      {paying && user ? (
+        <div className="mt-8">
+          <StripeEmbeddedCheckout slugs={lines.map((l) => l.slug)} />
+        </div>
+      ) : (
+        <Button size="lg" className="mt-8 w-full" disabled={loading} onClick={handlePay}>
+          Continue — {formatPrice(total)}
+        </Button>
+      )}
 
       {!user && !loading && (
         <p className="mt-3 text-center text-sm text-muted-foreground">
@@ -154,6 +151,7 @@ function CheckoutPage() {
 
       <div className="mt-10">
         <SafetyNote variant="compact" />
+      </div>
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as LibraryRouteImport } from './routes/library'
 import { Route as ThankYouRouteImport } from './routes/thank-you'
 import { Route as UpsellSlugRouteImport } from './routes/upsell.$slug'
-import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe-webhook'
+import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -53,11 +53,12 @@ const UpsellSlugRoute = UpsellSlugRouteImport.update({
   path: '/upsell/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicStripeWebhookRoute = ApiPublicStripeWebhookRouteImport.update({
-  id: '/api/public/stripe-webhook',
-  path: '/api/public/stripe-webhook',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const ApiPublicPaymentsWebhookRoute =
+  ApiPublicPaymentsWebhookRouteImport.update({
+    id: '/api/public/payments/webhook',
+    path: '/api/public/payments/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -67,7 +68,7 @@ export interface FileRoutesByFullPath {
   '/library': typeof LibraryRoute
   '/thank-you': typeof ThankYouRoute
   '/upsell/$slug': typeof UpsellSlugRoute
-  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -77,7 +78,7 @@ export interface FileRoutesByTo {
   '/library': typeof LibraryRoute
   '/thank-you': typeof ThankYouRoute
   '/upsell/$slug': typeof UpsellSlugRoute
-  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -88,7 +89,7 @@ export interface FileRoutesById {
   '/library': typeof LibraryRoute
   '/thank-you': typeof ThankYouRoute
   '/upsell/$slug': typeof UpsellSlugRoute
-  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -100,7 +101,7 @@ export interface FileRouteTypes {
     | '/library'
     | '/thank-you'
     | '/upsell/$slug'
-    | '/api/public/stripe-webhook'
+    | '/api/public/payments/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -110,7 +111,7 @@ export interface FileRouteTypes {
     | '/library'
     | '/thank-you'
     | '/upsell/$slug'
-    | '/api/public/stripe-webhook'
+    | '/api/public/payments/webhook'
   id:
     | '__root__'
     | '/'
@@ -120,7 +121,7 @@ export interface FileRouteTypes {
     | '/library'
     | '/thank-you'
     | '/upsell/$slug'
-    | '/api/public/stripe-webhook'
+    | '/api/public/payments/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -131,7 +132,7 @@ export interface RootRouteChildren {
   LibraryRoute: typeof LibraryRoute
   ThankYouRoute: typeof ThankYouRoute
   UpsellSlugRoute: typeof UpsellSlugRoute
-  ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
+  ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -185,11 +186,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UpsellSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/stripe-webhook': {
-      id: '/api/public/stripe-webhook'
-      path: '/api/public/stripe-webhook'
-      fullPath: '/api/public/stripe-webhook'
-      preLoaderRoute: typeof ApiPublicStripeWebhookRouteImport
+    '/api/public/payments/webhook': {
+      id: '/api/public/payments/webhook'
+      path: '/api/public/payments/webhook'
+      fullPath: '/api/public/payments/webhook'
+      preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -203,7 +204,7 @@ const rootRouteChildren: RootRouteChildren = {
   LibraryRoute: LibraryRoute,
   ThankYouRoute: ThankYouRoute,
   UpsellSlugRoute: UpsellSlugRoute,
-  ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,
+  ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

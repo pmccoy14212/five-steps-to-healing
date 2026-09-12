@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { toast } from "sonner";
 import { listProducts } from "@/lib/catalog.functions";
-import { createCheckoutSession } from "@/lib/checkout.functions";
 import { formatPrice } from "@/lib/format";
 import { useSession } from "@/hooks/use-session";
+import { StripeEmbeddedCheckout } from "@/components/StripeEmbeddedCheckout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { SafetyNote } from "@/components/safety-note";
@@ -40,29 +38,19 @@ function BundlePage() {
   const { data: products } = useSuspenseQuery(productsQuery);
   const { user } = useSession();
   const navigate = useNavigate();
-  const startCheckout = useServerFn(createCheckoutSession);
-  const [busy, setBusy] = useState(false);
+  const [paying, setPaying] = useState(false);
 
   const bundle = products.find((p) => p.slug === "complete-bundle");
   if (!bundle) return null;
   const included = products.filter((p) => bundle.bundle_slugs.includes(p.slug));
   const full = included.reduce((s, p) => s + p.price_cents, 0);
 
-  async function handleBuy() {
+  function handleBuy() {
     if (!user) {
       navigate({ to: "/auth", search: { redirect: "/bundle" } });
       return;
     }
-    setBusy(true);
-    try {
-      const { url } = await startCheckout({
-        data: { slugs: ["complete-bundle"], origin: window.location.origin },
-      });
-      window.location.href = url;
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Checkout could not start.");
-      setBusy(false);
-    }
+    setPaying(true);
   }
 
   return (
@@ -92,9 +80,15 @@ function BundlePage() {
       <div className="mt-10 rounded-sm border border-primary/60 bg-secondary p-8">
         <p className="text-muted-foreground line-through">{formatPrice(full)} separately</p>
         <p className="mt-1 font-display text-4xl text-primary">{formatPrice(bundle.price_cents)}</p>
-        <Button size="lg" className="mt-6 w-full sm:w-auto sm:px-10" disabled={busy} onClick={handleBuy}>
-          {busy ? "One moment…" : `Get the complete bundle — ${formatPrice(bundle.price_cents)}`}
-        </Button>
+        {paying && user ? (
+          <div className="mt-6">
+            <StripeEmbeddedCheckout slugs={["complete-bundle"]} />
+          </div>
+        ) : (
+          <Button size="lg" className="mt-6 w-full sm:w-auto sm:px-10" onClick={handleBuy}>
+            Get the complete bundle — {formatPrice(bundle.price_cents)}
+          </Button>
+        )}
         <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
           Nothing here expires, and nothing needs reading in order. Take what helps, when it helps.{" "}
           <Link to="/" className="underline underline-offset-4">
