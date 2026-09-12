@@ -68,7 +68,9 @@ function CheckoutPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-16">
+    <div>
+      <PaymentTestModeBanner />
+      <div className="mx-auto max-w-2xl px-6 py-16">
       <h1 className="text-3xl">Your order</h1>
 
       <div className="mt-8 border-t border-border/70">
@@ -125,9 +127,15 @@ function CheckoutPage() {
         </span>
       </label>
 
-      <Button size="lg" className="mt-8 w-full" disabled={busy || loading} onClick={handlePay}>
-        {busy ? "One moment…" : `Continue — ${formatPrice(total)}`}
-      </Button>
+      {paying && user ? (
+        <div className="mt-8">
+          <StripeEmbeddedCheckout slugs={lines.map((l) => l.slug)} />
+        </div>
+      ) : (
+        <Button size="lg" className="mt-8 w-full" disabled={loading} onClick={handlePay}>
+          Continue — {formatPrice(total)}
+        </Button>
+      )}
 
       {!user && !loading && (
         <p className="mt-3 text-center text-sm text-muted-foreground">
