@@ -59,21 +59,12 @@ function CheckoutPage() {
       .filter((p) => bundle.bundle_slugs.includes(p.slug))
       .reduce((s, p) => s + p.price_cents, 0) - bundle.price_cents;
 
-  async function handlePay() {
+  function handlePay() {
     if (!user) {
       navigate({ to: "/auth", search: { redirect: "/checkout" } });
       return;
     }
-    setBusy(true);
-    try {
-      const { url } = await startCheckout({
-        data: { slugs: lines.map((l) => l.slug), origin: window.location.origin },
-      });
-      window.location.href = url;
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Checkout could not start.");
-      setBusy(false);
-    }
+    setPaying(true);
   }
 
   return (
