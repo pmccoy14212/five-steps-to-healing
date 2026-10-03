@@ -19,5 +19,5 @@
 - No urgency bars, countdowns, or fake scarcity.
 
 ## Payments
-- [ ] Live Stripe: blocked on Stripe support linking verified account (user-supplied pk_live is from a different Stripe account)
+- [ ] Live Stripe: awaiting user confirmation to switch to own Stripe secret key (built-in go-live stuck)
 - [ ] Close purchase/account gaps (plan pending user answers)
