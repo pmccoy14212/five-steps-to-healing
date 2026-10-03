@@ -14,6 +14,7 @@ const productsQuery = queryOptions({
 });
 
 export const Route = createFileRoute("/upsell/$slug")({
+  staticData: { sitemap: false },
   loader: ({ context }) => context.queryClient.ensureQueryData(productsQuery),
   head: () => ({
     meta: [

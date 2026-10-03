@@ -15,6 +15,7 @@ const productsQuery = queryOptions({
 });
 
 export const Route = createFileRoute("/bundle")({
+  staticData: { sitemap: true },
   loader: ({ context }) => context.queryClient.ensureQueryData(productsQuery),
   head: () => ({
     meta: [

@@ -16,6 +16,7 @@ const productsQuery = queryOptions({
 });
 
 export const Route = createFileRoute("/thank-you")({
+  staticData: { sitemap: false },
   validateSearch: z.object({
     session_id: z.string().optional(),
     ref: z.string().optional(),

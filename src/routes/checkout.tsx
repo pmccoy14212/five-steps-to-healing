@@ -17,11 +17,13 @@ const productsQuery = queryOptions({
 });
 
 export const Route = createFileRoute("/checkout")({
+  staticData: { sitemap: false },
   validateSearch: z.object({ bundle: z.boolean().optional() }),
   loader: ({ context }) => context.queryClient.ensureQueryData(productsQuery),
   head: () => ({
     meta: [
       { title: "Checkout — The First-Year Trigger Map" },
+      { name: "robots", content: "noindex" },
       {
         name: "description",
         content:
