@@ -18,13 +18,14 @@ export async function expandSlugs(slugs: string[]): Promise<string[]> {
   return [...out];
 }
 
-export async function priceFor(slugs: string[]): Promise<number> {
+/** Slugs (bundles expanded) the user already owns. */
+export async function ownedSlugs(userId: string): Promise<Set<string>> {
   const { data, error } = await supabaseAdmin
-    .from("products")
-    .select("price_cents")
-    .in("slug", slugs);
+    .from("entitlements")
+    .select("product_slug")
+    .eq("user_id", userId);
   if (error) throw new Error(error.message);
-  return (data ?? []).reduce((sum, r) => sum + r.price_cents, 0);
+  return new Set((data ?? []).map((r) => r.product_slug));
 }
 
 /**
@@ -38,14 +39,18 @@ export async function grantOrder(params: {
   slugs: string[];
   amountCents: number;
   reference: string;
+  paymentIntent?: string | null;
 }): Promise<string[]> {
-  const { userId, email, slugs, amountCents, reference } = params;
+  const { userId, email, slugs, amountCents, reference, paymentIntent } = params;
 
   const { data: existing } = await supabaseAdmin
     .from("orders")
-    .select("id")
+    .select("id, refunded_at")
     .eq("stripe_session_id", reference)
     .maybeSingle();
+
+  // Never re-grant access for an order that has been refunded.
+  if (existing?.refunded_at) return [];
 
   let orderId = existing?.id ?? null;
 
@@ -59,29 +64,64 @@ export async function grantOrder(params: {
         amount_cents: amountCents,
         status: "paid",
         stripe_session_id: reference,
+        stripe_payment_intent: paymentIntent ?? null,
       })
       .select("id")
       .single();
-    if (error) throw new Error(error.message);
-    orderId = inserted.id;
+    if (error) {
+      // Concurrent webhook + thank-you confirmation: fall back to the winner.
+      const { data: again } = await supabaseAdmin
+        .from("orders")
+        .select("id")
+        .eq("stripe_session_id", reference)
+        .maybeSingle();
+      if (!again) throw new Error(error.message);
+      orderId = again.id;
+    } else {
+      orderId = inserted.id;
+    }
+  } else if (paymentIntent) {
+    await supabaseAdmin
+      .from("orders")
+      .update({ stripe_payment_intent: paymentIntent })
+      .eq("id", orderId)
+      .is("stripe_payment_intent", null);
   }
 
   const owned = await expandSlugs(slugs);
-
-  const { data: already } = await supabaseAdmin
-    .from("entitlements")
-    .select("product_slug")
-    .eq("user_id", userId);
-  const have = new Set((already ?? []).map((r) => r.product_slug));
+  const have = await ownedSlugs(userId);
 
   const toInsert = owned
     .filter((slug) => !have.has(slug))
     .map((slug) => ({ user_id: userId, product_slug: slug, order_id: orderId }));
 
   if (toInsert.length > 0) {
-    const { error } = await supabaseAdmin.from("entitlements").insert(toInsert);
+    const { error } = await supabaseAdmin
+      .from("entitlements")
+      .upsert(toInsert, { onConflict: "user_id,product_slug", ignoreDuplicates: true });
     if (error) throw new Error(error.message);
   }
 
   return owned;
+}
+
+/**
+ * Marks an order refunded and removes the access it granted.
+ * Matches by checkout session id or payment intent.
+ */
+export async function revokeOrder(match: { sessionId?: string | null; paymentIntent?: string | null }) {
+  let query = supabaseAdmin.from("orders").select("id");
+  if (match.sessionId) query = query.eq("stripe_session_id", match.sessionId);
+  else if (match.paymentIntent) query = query.eq("stripe_payment_intent", match.paymentIntent);
+  else return;
+
+  const { data: orders, error } = await query;
+  if (error) throw new Error(error.message);
+  for (const order of orders ?? []) {
+    await supabaseAdmin.from("entitlements").delete().eq("order_id", order.id);
+    await supabaseAdmin
+      .from("orders")
+      .update({ status: "refunded", refunded_at: new Date().toISOString() })
+      .eq("id", order.id);
+  }
 }

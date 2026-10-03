@@ -79,6 +79,16 @@ export const createCheckoutSession = createServerFn({ method: "POST" })
         return key;
       });
 
+      // Don't charge anyone for something already in their library.
+      const { ownedSlugs, expandSlugs } = await import("./fulfillment.server");
+      const owned = await ownedSlugs(userId);
+      for (const slug of data.slugs) {
+        const contents = await expandSlugs([slug]);
+        if (contents.every((s) => owned.has(s))) {
+          return { error: "This is already in your library — no need to buy it again." };
+        }
+      }
+
       const stripe = createStripeClient(data.environment as StripeEnv);
       const prices = await stripe.prices.list({ lookup_keys: lookupKeys, limit: 10 });
       if (prices.data.length !== lookupKeys.length) {
@@ -147,6 +157,10 @@ export const confirmCheckout = createServerFn({ method: "POST" })
       slugs,
       amountCents: session.amount_total ?? 0,
       reference: data.reference,
+      paymentIntent:
+        typeof session.payment_intent === "string"
+          ? session.payment_intent
+          : (session.payment_intent?.id ?? null),
     });
     return { granted };
   });

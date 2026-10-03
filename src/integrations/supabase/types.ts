@@ -60,7 +60,9 @@ export type Database = {
           email: string | null
           id: string
           product_slugs: string[]
+          refunded_at: string | null
           status: string
+          stripe_payment_intent: string | null
           stripe_session_id: string | null
           user_id: string | null
         }
@@ -70,7 +72,9 @@ export type Database = {
           email?: string | null
           id?: string
           product_slugs?: string[]
+          refunded_at?: string | null
           status?: string
+          stripe_payment_intent?: string | null
           stripe_session_id?: string | null
           user_id?: string | null
         }
@@ -80,7 +84,9 @@ export type Database = {
           email?: string | null
           id?: string
           product_slugs?: string[]
+          refunded_at?: string | null
           status?: string
+          stripe_payment_intent?: string | null
           stripe_session_id?: string | null
           user_id?: string | null
         }
@@ -90,6 +96,7 @@ export type Database = {
         Row: {
           active: boolean
           bundle_slugs: string[]
+          content_md: string | null
           created_at: string
           description: string | null
           file_path: string | null
@@ -105,6 +112,7 @@ export type Database = {
         Insert: {
           active?: boolean
           bundle_slugs?: string[]
+          content_md?: string | null
           created_at?: string
           description?: string | null
           file_path?: string | null
@@ -120,6 +128,7 @@ export type Database = {
         Update: {
           active?: boolean
           bundle_slugs?: string[]
+          content_md?: string | null
           created_at?: string
           description?: string | null
           file_path?: string | null
