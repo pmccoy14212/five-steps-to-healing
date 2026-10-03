@@ -19,5 +19,5 @@
 - No urgency bars, countdowns, or fake scarcity.
 
 ## Payments
-- [ ] Live Stripe: awaiting user confirmation to switch to own Stripe secret key (built-in go-live stuck)
+- [x] Live Stripe: own secret key wired for live; products + webhook created
 - [ ] Close purchase/account gaps (plan pending user answers)
