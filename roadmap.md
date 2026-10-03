@@ -17,3 +17,7 @@
 ## Constraints
 - Peer-support education, never clinical. 988 safety copy visible on every public page.
 - No urgency bars, countdowns, or fake scarcity.
+
+## Payments
+- [ ] Live Stripe: blocked on Stripe support linking verified account (user-supplied pk_live is from a different Stripe account)
+- [ ] Close purchase/account gaps (plan pending user answers)
