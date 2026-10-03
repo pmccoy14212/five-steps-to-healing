@@ -26,6 +26,7 @@ async function fulfill(session: any) {
 }
 
 export const Route = createFileRoute("/api/public/payments/webhook")({
+  staticData: { sitemap: false },
   server: {
     handlers: {
       POST: async ({ request }) => {

@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/accordion";
 
 export const Route = createFileRoute("/")({
+  staticData: { sitemap: true },
   component: Index,
 });
 

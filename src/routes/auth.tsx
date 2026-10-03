@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { SafetyNote } from "@/components/safety-note";
 
 export const Route = createFileRoute("/auth")({
+  staticData: { sitemap: false },
   validateSearch: z.object({ redirect: z.string().optional() }),
   head: () => ({
     meta: [
