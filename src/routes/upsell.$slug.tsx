@@ -16,21 +16,25 @@ const productsQuery = queryOptions({
 export const Route = createFileRoute("/upsell/$slug")({
   staticData: { sitemap: false },
   loader: ({ context }) => context.queryClient.ensureQueryData(productsQuery),
-  head: () => ({
-    meta: [
-      { title: "A companion resource — Ncredible Solutions" },
-      {
-        name: "description",
-        content:
-          "A companion grief resource for the parts of loss that don't fit neatly — offered gently, never with pressure.",
-      },
-      { property: "og:title", content: "A companion resource — Ncredible Solutions" },
-      {
-        property: "og:description",
-        content: "For the parts of grief that don't fit on a sympathy card.",
-      },
-    ],
-  }),
+  head: ({ params, loaderData }) => {
+    const product = loaderData?.find((p) => p.slug === params.slug);
+    const title = product
+      ? `${product.name} — Ncredible Solutions`
+      : "A companion resource — Ncredible Solutions";
+    const description = product?.description
+      ? product.description.slice(0, 155)
+      : "A companion grief resource for the parts of loss that don't fit neatly — offered gently, never with pressure.";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "product" },
+        { name: "twitter:card", content: "summary" },
+      ],
+    };
+  },
   notFoundComponent: UpsellNotFound,
   component: UpsellPage,
 });
