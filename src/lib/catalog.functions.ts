@@ -93,3 +93,29 @@ export const getMyLibrary = createServerFn({ method: "GET" })
       orders: orders ?? [],
     };
   });
+
+export const getDownloadUrl = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { slug: string }) => ({ slug: String(d.slug).slice(0, 100) }))
+  .handler(async ({ data, context }) => {
+    const { supabase, userId } = context;
+    const { data: ent } = await supabase
+      .from("entitlements")
+      .select("product_slug")
+      .eq("user_id", userId)
+      .eq("product_slug", data.slug)
+      .maybeSingle();
+    if (!ent) throw new Error("You don't own this guide yet.");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: prod } = await supabaseAdmin
+      .from("products")
+      .select("file_path")
+      .eq("slug", data.slug)
+      .maybeSingle();
+    if (!prod?.file_path) throw new Error("This file isn't available yet.");
+    const { data: signed, error } = await supabaseAdmin.storage
+      .from("product-files")
+      .createSignedUrl(prod.file_path, 600, { download: true });
+    if (error || !signed) throw new Error("This file isn't available yet.");
+    return { url: signed.signedUrl };
+  });

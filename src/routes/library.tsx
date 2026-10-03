@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { listProducts, getMyLibrary } from "@/lib/catalog.functions";
+import { listProducts, getMyLibrary, getDownloadUrl } from "@/lib/catalog.functions";
 import { formatPrice } from "@/lib/format";
 import { useSession } from "@/hooks/use-session";
 import { Button } from "@/components/ui/button";
@@ -35,6 +35,7 @@ function LibraryPage() {
   const { user, loading } = useSession();
   const { data: products } = useSuspenseQuery(productsQuery);
   const fetchLibrary = useServerFn(getMyLibrary);
+  const download = useServerFn(getDownloadUrl);
 
   const { data, isLoading } = useQuery({
     queryKey: ["library", user?.id],
@@ -93,6 +94,23 @@ function LibraryPage() {
                     <li key={item}>· {item}</li>
                   ))}
                 </ul>
+              )}
+              {p.slug !== "complete-bundle" && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-5"
+                  onClick={async () => {
+                    try {
+                      const { url } = await download({ data: { slug: p.slug } });
+                      window.location.href = url;
+                    } catch (e) {
+                      alert(e instanceof Error ? e.message : "This file isn't available yet.");
+                    }
+                  }}
+                >
+                  Download PDF
+                </Button>
               )}
             </CardContent>
           </Card>
