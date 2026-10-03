@@ -19,5 +19,5 @@
 - No urgency bars, countdowns, or fake scarcity.
 
 ## Payments
-- [ ] Live Stripe: secret key, products, webhook done; needs matching pk_live publishable key from user
+- [x] Live Stripe: own keys wired for live; products + webhook created
 - [ ] Close purchase/account gaps (plan pending user answers)
