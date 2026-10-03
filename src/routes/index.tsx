@@ -326,9 +326,11 @@ function Pricing() {
                 Next Survivable Step Companion
               </li>
             </ul>
-            <Button className="mt-6 w-full gap-2" size="lg">
-              Get the Trigger Map — $47
-              <ArrowRight className="h-4 w-4" />
+            <Button asChild className="mt-6 w-full gap-2" size="lg">
+              <Link to="/checkout">
+                Get the Trigger Map — $47
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </Button>
             <p className="mt-3 text-center text-xs text-muted-foreground">
               Instant download. Full suite (Toolkit, Health Loss & Estrangement workbooks)
@@ -388,12 +390,12 @@ function ClosingCta() {
           Start with the First-Year Trigger Map, or try the free companion tool right now.
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a href="#pricing">
-            <Button size="lg" className="gap-2">
+          <Button asChild size="lg" className="gap-2">
+            <Link to="/checkout">
               Get the Trigger Map
               <ArrowRight className="h-4 w-4" />
-            </Button>
-          </a>
+            </Link>
+          </Button>
         </div>
       </div>
     </section>
