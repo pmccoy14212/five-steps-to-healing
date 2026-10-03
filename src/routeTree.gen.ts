@@ -14,6 +14,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BundleRouteImport } from './routes/bundle'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as LibraryRouteImport } from './routes/library'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ThankYouRouteImport } from './routes/thank-you'
 import { Route as UpsellSlugRouteImport } from './routes/upsell.$slug'
 import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
@@ -43,6 +44,11 @@ const LibraryRoute = LibraryRouteImport.update({
   path: '/library',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ThankYouRoute = ThankYouRouteImport.update({
   id: '/thank-you',
   path: '/thank-you',
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/bundle': typeof BundleRoute
   '/checkout': typeof CheckoutRoute
   '/library': typeof LibraryRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
   '/upsell/$slug': typeof UpsellSlugRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/bundle': typeof BundleRoute
   '/checkout': typeof CheckoutRoute
   '/library': typeof LibraryRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
   '/upsell/$slug': typeof UpsellSlugRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/bundle': typeof BundleRoute
   '/checkout': typeof CheckoutRoute
   '/library': typeof LibraryRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/thank-you': typeof ThankYouRoute
   '/upsell/$slug': typeof UpsellSlugRoute
   '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/bundle'
     | '/checkout'
     | '/library'
+    | '/sitemap.xml'
     | '/thank-you'
     | '/upsell/$slug'
     | '/api/public/payments/webhook'
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/bundle'
     | '/checkout'
     | '/library'
+    | '/sitemap.xml'
     | '/thank-you'
     | '/upsell/$slug'
     | '/api/public/payments/webhook'
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/bundle'
     | '/checkout'
     | '/library'
+    | '/sitemap.xml'
     | '/thank-you'
     | '/upsell/$slug'
     | '/api/public/payments/webhook'
@@ -130,6 +142,7 @@ export interface RootRouteChildren {
   BundleRoute: typeof BundleRoute
   CheckoutRoute: typeof CheckoutRoute
   LibraryRoute: typeof LibraryRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ThankYouRoute: typeof ThankYouRoute
   UpsellSlugRoute: typeof UpsellSlugRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
@@ -172,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LibraryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/thank-you': {
       id: '/thank-you'
       path: '/thank-you'
@@ -202,6 +222,7 @@ const rootRouteChildren: RootRouteChildren = {
   BundleRoute: BundleRoute,
   CheckoutRoute: CheckoutRoute,
   LibraryRoute: LibraryRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   ThankYouRoute: ThankYouRoute,
   UpsellSlugRoute: UpsellSlugRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
